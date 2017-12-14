@@ -180,8 +180,6 @@ public class PlayState extends GameState {
 		
 			File axe = new File("Resources/Coordinates/axeLocation.txt");
 			File boat = new File("Resources/Coordinates/boatLocation.txt");
-			System.out.println(axe.getCanonicalPath());
-			System.out.println(boat.getCanonicalPath());
 			axeIO = new Scanner(axe);
 			while(axeIO.hasNextInt())	{
 			   xAxe = axeIO.nextInt();
