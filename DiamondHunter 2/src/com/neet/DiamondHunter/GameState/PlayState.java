@@ -5,6 +5,8 @@
 
 package com.neet.DiamondHunter.GameState;
 
+import java.io.File;
+import java.util.Scanner;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -172,17 +174,36 @@ public class PlayState extends GameState {
 	
 	private void populateItems() {
 		
-		Item item;
+		try {
+			Item item;
+			int xAxe = 0, yAxe = 0, xBoat = 0, yBoat = 0;
 		
-		item = new Item(tileMap);
-		item.setType(Item.AXE);
-		item.setTilePosition(26, 37);
-		items.add(item);
-		
-		item = new Item(tileMap);
-		item.setType(Item.BOAT);
-		item.setTilePosition(12, 4);
-		items.add(item);
+			File axe = new File("Resources/Coordinates/axeLocation.txt");
+			File boat = new File("Resources/Coordinates/boatLocation.txt");
+			System.out.println(axe.getCanonicalPath());
+			System.out.println(boat.getCanonicalPath());
+			axeIO = new Scanner(axe);
+			while(axeIO.hasNextInt())	{
+			   xAxe = axeIO.nextInt();
+			   yAxe = axeIO.nextInt();
+			}
+			item = new Item(tileMap);
+			item.setType(Item.AXE);
+			item.setTilePosition(xAxe, yAxe);
+			items.add(item);
+			
+			boatIO = new Scanner(boat);
+			while(boatIO.hasNextInt()){
+			   xBoat = boatIO.nextInt();
+			   yBoat = boatIO.nextInt();
+			}
+			item = new Item(tileMap);
+			item.setType(Item.BOAT);
+			item.setTilePosition(xBoat, yBoat);
+			items.add(item);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
