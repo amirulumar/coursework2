@@ -13,9 +13,8 @@ import javafx.scene.image.Image;
  * Essentially the tile is drew into the mainCanvas and convert the canvas into originalMapImage using snapshot,
  * then add the cursor into the mainCanvas, and convert the canvas into mapImage. 
  * 
- * Every time the cursor is moved, or the map is zoomed in/out, previous position is updated by taking originalMapImage
- * and mainCanvas will be drew the cursor and items that already put. Then currentCanvas takes part/whole of the
- * mainCanvas to show. 
+ * Every time the cursor is moved, previous position is updated by taking originalMapImage
+ * and mainCanvas will draw the cursor and items that already put. 
  *
  * @author  Jadon Ming
  * @since   2016-12-08
@@ -51,9 +50,6 @@ public class TileMapViewer {
 	public MyCursor cursor;
 	public boolean cursorColor = false;
 
-	private int currentNumCols;
-	private int currentNumRows;
-
 	private int[][] mapMatrix;
 	private int[][] tileType;
 	
@@ -63,27 +59,13 @@ public class TileMapViewer {
 	/**
 	 * Variable mainCanvas is to update the whole map
 	 */
-	private Canvas mainCanvas;
-	
-	/**
-	 * Variable currentCanvas is to show the current part of map with proper magnification
-	 */
-	public Canvas currentCanvas;
+	public Canvas mainCanvas;
 
-	/**
-	 * Variable mapImage is to store current image of the whole map with the cursor, since the map can be zoomed
-	 * in and out, the currentCanvas always take part of the mapImage into drawing current image
-	 */
-	private Image mapImage;
-	
 	/**
 	 * Variable originalMapImage is to store original image of the whole map without the cursor, so that when
 	 * the cursor is moved, the current map image is updated properly
 	 */
 	private Image originalMapImage;
-
-	public int movesetCols;
-	public int movesetRows;
 
 	public Image items;
 	public boolean axePut = false;
@@ -102,8 +84,6 @@ public class TileMapViewer {
 
 			numCols = Integer.parseInt(br.readLine());
 			numRows = Integer.parseInt(br.readLine());
-			currentNumCols = numCols;
-			currentNumRows = numRows;
 
 			mapMatrix = new int[numRows][numCols];
 
@@ -139,11 +119,10 @@ public class TileMapViewer {
 	}
 
 	/**
-	 * The method initialises two used canvas and take the snapshot. 
+	 * The method initializes canvas and takes the snapshot. 
 	 */
 	public void initialiseCanvas() {
 		mainCanvas = new Canvas(640,640);
-		currentCanvas = new Canvas(640, 640);
 		tileType = new int[numRows][numCols];
 		cursor = new MyCursor();
 
@@ -160,16 +139,10 @@ public class TileMapViewer {
 					mainCanvas.getGraphicsContext2D().drawImage(
 							tileset, c * tileSize, 0, tileSize, tileSize,
 							col * tileSize, row * tileSize, tileSize, tileSize);
-					currentCanvas.getGraphicsContext2D().drawImage(
-							tileset, c * tileSize, 0, tileSize, tileSize,
-							col * tileSize, row * tileSize, tileSize, tileSize);
 					tileType[row][col] = 0;
 				}
 				else {
 					mainCanvas.getGraphicsContext2D().drawImage(
-							tileset, c * tileSize, tileSize, tileSize, tileSize,
-							col * tileSize, row * tileSize, tileSize, tileSize);
-					currentCanvas.getGraphicsContext2D().drawImage(
 							tileset, c * tileSize, tileSize, tileSize, tileSize,
 							col * tileSize, row * tileSize, tileSize, tileSize);
 					tileType[row][col] = 1;
@@ -179,11 +152,7 @@ public class TileMapViewer {
 		}
 		originalMapImage = mainCanvas.snapshot(null, null);
 		drawCursorToMainCanvas();
-		currentCanvas.getGraphicsContext2D().drawImage(
-				cursor.imageOption[cursor.current], 0, 0, tileSize, tileSize,
-				 cursor.cursorCols * tileSize, cursor.cursorRows * tileSize,
-				 tileSize, tileSize);
-		mapImage = mainCanvas.snapshot(null, null);
+		mainCanvas.snapshot(null, null);
 	}
 
 	/**
@@ -211,38 +180,6 @@ public class TileMapViewer {
 				cursor.cursorCols * tileSize,
 				cursor.cursorRows * tileSize,
 				tileSize, tileSize);
-	}
-	
-	/**
-	 * The method is used to update current shown canvas after each move or key pressed.
-	 */
-	private void updateCurrentCanvas() {
-		currentCanvas.getGraphicsContext2D().drawImage(
-				mapImage,
-				movesetCols * tileSize, movesetRows * tileSize,
-				currentNumCols * tileSize, currentNumRows * tileSize,
-				0, 0, 640, 640);
-	}
-
-	/**
-	 * The method is used to update the bounder when the user zoom in the map and cursor is moved
-	 * to the bounder of current image but still inside the whole image. The value is set equal to
-	 * offset by default.
-	 */
-	private void updateMoveset() {
-		if (movesetCols > cursor.cursorCols) {
-			movesetCols --;
-		}
-		else if (movesetRows > cursor.cursorRows) {
-			movesetRows --;
-		}
-		else if (movesetCols + currentNumCols - 1 < cursor.cursorCols) {
-			movesetCols ++;
-		}
-		else if (movesetRows + currentNumRows - 1 < cursor.cursorRows) {
-			movesetRows ++;
-		}
-
 	}
 
 	/**
@@ -274,9 +211,7 @@ public class TileMapViewer {
 
 		updateItemsDraw();
 		drawCursorToMainCanvas();
-		mapImage = mainCanvas.snapshot(null, null);
-		updateCurrentCanvas();
-
+		mainCanvas.snapshot(null, null);
 	}
 
 	/**
@@ -292,10 +227,7 @@ public class TileMapViewer {
 			updateItemsDraw();
 			drawCursorToMainCanvas();
 
-			mapImage = mainCanvas.snapshot(null, null);
-
-			updateMoveset();
-			updateCurrentCanvas();
+			mainCanvas.snapshot(null, null);
 		}
 	}
 	/**
@@ -311,10 +243,7 @@ public class TileMapViewer {
 			updateItemsDraw();
 			drawCursorToMainCanvas();
 
-			mapImage = mainCanvas.snapshot(null, null);
-
-			updateMoveset();
-			updateCurrentCanvas();
+			mainCanvas.snapshot(null, null);
 		}
 	}
 	/**
@@ -330,10 +259,7 @@ public class TileMapViewer {
 			updateItemsDraw();
 			drawCursorToMainCanvas();
 
-			mapImage = mainCanvas.snapshot(null, null);
-
-			updateMoveset();
-			updateCurrentCanvas();
+			mainCanvas.snapshot(null, null);
 		}
 	}
 	/**
@@ -349,10 +275,7 @@ public class TileMapViewer {
 			updateItemsDraw();
 			drawCursorToMainCanvas();
 
-			mapImage = mainCanvas.snapshot(null, null);
-
-			updateMoveset();
-			updateCurrentCanvas();
+			mainCanvas.snapshot(null, null);
 		}
 	}
 	
@@ -421,8 +344,7 @@ public class TileMapViewer {
 		updateItemsDraw();
     	drawCursorToMainCanvas();
 		
-    	mapImage = mainCanvas.snapshot(null, null);
-    	updateCurrentCanvas();
+    	mainCanvas.snapshot(null, null);
 
     	return handleType;
 	}
@@ -469,8 +391,7 @@ public class TileMapViewer {
 		}
 		updateItemsDraw();
 		drawCursorToMainCanvas();
-    	mapImage = mainCanvas.snapshot(null, null);
-    	updateCurrentCanvas();
+    	mainCanvas.snapshot(null, null);
     	return handleType;
 	}
 }

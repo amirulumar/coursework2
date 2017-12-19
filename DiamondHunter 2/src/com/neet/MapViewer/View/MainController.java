@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Region;
 
 public class MainController {
 
@@ -30,7 +31,8 @@ public class MainController {
 	@FXML
 	private Label boatPosition;
 	
-	private int axeX, axeY, boatX, boatY;
+	private int axeX = -1, boatX = -1;
+	private int axeY, boatY;
 
 	private PrintWriter axe;
 
@@ -42,19 +44,19 @@ public class MainController {
 			information.setText("U: Axe, I: Boat");
 		}
 
-	    if (event.getCode() == KeyCode.W || event.getCode() == KeyCode.UP) {
+	    if (event.getCode() == KeyCode.W) {
 	    	MapMain.tileMapViewer.cursorUp();
 	    	updateCursorPosition();
 	    }
-	    else if (event.getCode() == KeyCode.S || event.getCode() == KeyCode.DOWN) {
+	    else if (event.getCode() == KeyCode.S) {
 	    	MapMain.tileMapViewer.cursorDown();
 	    	updateCursorPosition();
 	    }
-	    else if (event.getCode() == KeyCode.A || event.getCode() == KeyCode.LEFT) {
+	    else if (event.getCode() == KeyCode.A) {
 	    	MapMain.tileMapViewer.cursorLeft();
 	    	updateCursorPosition();
 	    }
-	    else if (event.getCode() == KeyCode.D || event.getCode() == KeyCode.RIGHT) {
+	    else if (event.getCode() == KeyCode.D) {
 	    	MapMain.tileMapViewer.cursorRight();
 	    	updateCursorPosition();
 	    }
@@ -66,7 +68,7 @@ public class MainController {
 	    	MapMain.tileMapViewer.turningOnCursorColor();
 	    	information.setText("Putting Boat...");
 	    }
-	    else if (event.getCode() == KeyCode.ENTER) {
+	    else if (event.getCode() == KeyCode.ESCAPE) {
 			MapMain.primaryStage.hide();
 			Game.main(null);
 	    }
@@ -127,40 +129,57 @@ public class MainController {
 	@FXML private void helpInfo() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Instruction");
-		alert.setHeaderText("Instruction of map viewer");
-		alert.setContentText("W/A/S/D or UP/LEFT/DOWN/RIGHT to move.\n"
-        		+ "K/J to zoom in/out the map.\n"
-        		+ "Press U/I to detect if AXE/BOAT position valid, release it to confirm. "
+		alert.setHeaderText("Instructions of Map Viewer");
+		alert.setContentText("W/A/S/D to move.\n"
+        		+ "Hold U/I to detect if axe/boat positions are valid, release it to confirm. "
         		+ "(Green is valid, Red is invalid)\n\n"
-        		+ "Press Enter to the main game.\n\n"
-        		+ "NOTICE: When you press `U` or `I` (not yet release), "
-        		+ "you will find the cursor color automatically change to red/green "
+        		+ "Press Escape to the main game.\n\n"
+        		+ "NOTICE: When you hold U or I, you will find "
+        		+ "the cursor color automatically change to red/green "
         		+ "so that you know whether the position is available to you."
         		+ "During your press, you can move the cursor to find a position you would like to set the item up. "
-        		+ "Once you decided, release the key.\n"
-        		+ "NOTICE: You can move the cursor even when the map is zoomed in. "
-        		+ "The map will update automatically following your cursor move. "
+        		+ "Once you have decided, release the key.\n"
         		+ "You can update the axe and boat position many times as you like.\n");
+		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 		alert.showAndWait();
 		alert.setOnCloseRequest(event -> {alert.close();});
 	}
-	@FXML private void aboutInfo() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("About");
-		alert.setHeaderText("About the software");
-		alert.setContentText("University of Nottingham - Zequn Yu\n\nVersion 1.0\n");
-		alert.showAndWait();
-		alert.setOnCloseRequest(event -> {alert.close();});
-	}
+	/**	Locations for both items are saved to their respective files, 
+	 * 	with x-axes first then y-axes.
+	 * 
+	 *  @throws IOException
+	 */
 	@FXML private void save() throws IOException {
+		// If both locations for both items are not set before saving. X-axes for 
+		// both items are used instead of the entire coordinate for simplicity.
+		if (axeX == -1 || boatX == -1) {
+			information.setText("Please add locations!");
+		} else {
+			axe = new PrintWriter(new FileWriter("Resources/Coordinates/axeLocation.txt"));
+			boat = new PrintWriter(new FileWriter("Resources/Coordinates/boatLocation.txt"));
+			axe.println(axeX);
+			axe.println(axeY);
+			boat.println(boatX);
+			boat.println(boatY);
+			axe.close();
+			boat.close();
+			information.setText("Locations saved!");
+		}
+	}
+	/**	Reverts back to initial item locations.
+	 * 
+	 * 	@throws IOException
+	 */
+	@FXML private void saveDefault() throws IOException {
 		axe = new PrintWriter(new FileWriter("Resources/Coordinates/axeLocation.txt"));
 		boat = new PrintWriter(new FileWriter("Resources/Coordinates/boatLocation.txt"));
-		axe.println(axeX);
-		axe.println(axeY);
-		boat.println(boatX);
-		boat.println(boatY);
+		axe.println(26);
+		axe.println(37);
+		boat.println(12);
+		boat.println(4);
 		axe.close();
 		boat.close();
+		information.setText("Set to default!");
 	}
 	
 	private void updateCursorPosition() {

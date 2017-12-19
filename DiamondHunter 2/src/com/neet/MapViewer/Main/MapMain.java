@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 /**
  * This class is the main class of Map Viewer. It loads the root layout and the basis of map layout
- * by loading the fxml file. It also loads map file and image file for the preparation of drawing.
+ * by loading the FXML file. It also loads map file and image file for the preparation of drawing.
  * Set the implicit exit to false is to hide the map viewer when the user go to the main game.
  * However there is a circumstance that the user closes the map without going to the main game. Therefore
  * on close request it is set to true back.
@@ -79,7 +79,7 @@ public class MapMain extends Application {
 		tileOverview.setPrefColumns(tileMapViewer.numCols);
 		tileOverview.setPrefRows(tileMapViewer.numRows);
 		tileMapViewer.initialiseCanvas();
-		tileOverview.getChildren().add(tileMapViewer.currentCanvas);
+		tileOverview.getChildren().add(tileMapViewer.mainCanvas);
 
 		rootLayout.setCenter(tileOverview);
     }
