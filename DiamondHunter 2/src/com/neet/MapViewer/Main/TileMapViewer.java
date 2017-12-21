@@ -11,13 +11,13 @@ import javafx.scene.image.Image;
  * This class contains the map and canvas and cursor to illustrate the proper image
  * to the user interface.
  * Essentially the tile is drew into the mainCanvas and convert the canvas into originalMapImage using snapshot,
- * then add the cursor into the mainCanvas, and convert the canvas into mapImage. 
- * 
- * Every time the cursor is moved, previous position is updated by taking originalMapImage
- * and mainCanvas will draw the cursor and items that already put. 
+ * then add the cursor into the mainCanvas, and convert the canvas into mapImage.
  *
- * @author  Jadon Ming
- * @since   2016-12-08
+ * Every time the cursor is moved, previous position is updated by taking originalMapImage
+ * and mainCanvas will draw the cursor and items that already put.
+ *
+ * @author  Amirul Umar Bin Pandai, Joan Kabura, Hoi Feo Long
+ * @since   2017-12-24
 */
 
 public class TileMapViewer {
@@ -25,8 +25,8 @@ public class TileMapViewer {
 	private int boatCol = -1;
 	private int axeRow = -1;
 	private int axeCol = -1;
-	
-	
+
+
 	public int getBoatRow() {
 		return boatRow;
 	}
@@ -39,20 +39,20 @@ public class TileMapViewer {
 	public int getAxeCol() {
 		return axeCol;
 	}
-	
+
 	private final int BOAT = 0;
 	private final int AXE = 1;
 
 	private int tileSize = 16;
 	public int numCols;
 	public int numRows;
-	
+
 	public MyCursor cursor;
 	public boolean cursorColor = false;
 
 	private int[][] mapMatrix;
 	private int[][] tileType;
-	
+
 	private Image tileset;
 	private int numTilesAcross;
 
@@ -74,8 +74,8 @@ public class TileMapViewer {
 	/**
 	 * The method reads numbers from map file, and then write the data to mapMatrix.
 	 * The value of numCols and numRows is also known from the map file.
-	 * 
-	 * @param mapFile The file that contains information of each grid in the map 
+	 *
+	 * @param mapFile The file that contains information of each grid in the map
 	 */
 	public void loadMapFile(String mapFile) {
 		try {
@@ -103,8 +103,8 @@ public class TileMapViewer {
 
 	/**
 	 * The method inputs image from resource.
-	 * 
-	 * @param tilesetImage The file that contains images of each tile 
+	 *
+	 * @param tilesetImage The file that contains images of each tile
 	 * @param itemsImage The file that contains images of axe and boat
 	 */
 	public void loadImagesFiles(String tilesetImage, String itemsImage) {
@@ -119,7 +119,7 @@ public class TileMapViewer {
 	}
 
 	/**
-	 * The method initializes canvas and takes the snapshot. 
+	 * The method initializes canvas and takes the snapshot.
 	 */
 	public void initialiseCanvas() {
 		mainCanvas = new Canvas(640,640);
@@ -186,7 +186,7 @@ public class TileMapViewer {
 	 * After press `U` or `I`, the user is very easy to observe the cursor color changed to red/green
 	 * so that they know whether this position is available or not. This method is used to change the
 	 * cursor color after each move during the button pressed process.
-	 * 
+	 *
 	 * @see MyCursor
 	 * @see #turningOnCursorColor()
 	 */
@@ -198,7 +198,7 @@ public class TileMapViewer {
 			cursor.current = 2;
 		}
 	}
-	
+
 	/**
 	 * The method is used to change the cursor color after button pressed for puting axe or boat.
 	 */
@@ -278,7 +278,7 @@ public class TileMapViewer {
 			mainCanvas.snapshot(null, null);
 		}
 	}
-	
+
 	/**
 	 * The method is used to draw the already-put items each time the map is changed.
 	 */
@@ -300,13 +300,13 @@ public class TileMapViewer {
 					tileSize, tileSize);
 		}
 	}
-	
+
 	/**
 	 * The method is used to handle the event that `U` is released, i.e. the user
 	 * chooses the position to put the AXE. The cursor color will back to gray. It
 	 * will return relative message to update the information shown in the information bar
-	 * under the map.  
-	 * 
+	 * under the map.
+	 *
 	 * @return handleType Return the type of setting result.
 	 */
 	public int handleSetAxeRequest() {
@@ -324,16 +324,16 @@ public class TileMapViewer {
 		else {
 			if (axePut) {
 				replaceTileInMainCanvasToOriginal(axeCol, axeRow);
-				
+
 				tileType[axeRow][axeCol] = 0;
 				tileType[cursor.cursorRows][cursor.cursorCols] = 1;
-				
+
 				handleType = 2;
 			}
 			else {
 				handleType = 0;
 			}
-			
+
     		axePut = true;
 	    	tileType[cursor.cursorRows][cursor.cursorCols] = 1;
 
@@ -343,7 +343,7 @@ public class TileMapViewer {
 
 		updateItemsDraw();
     	drawCursorToMainCanvas();
-		
+
     	mainCanvas.snapshot(null, null);
 
     	return handleType;
@@ -353,8 +353,8 @@ public class TileMapViewer {
 	 * The method is used to handle the event that `I` is released, i.e. the user
 	 * chooses the position to put the BOAT. The cursor color will back to gray. It
 	 * will return relative message to update the information shown in the information bar
-	 * under the map.  
-	 * 
+	 * under the map.
+	 *
 	 * @return handleType Return the type of setting result.
 	 */
 	public int handleSetBoatRequest() {
@@ -368,26 +368,26 @@ public class TileMapViewer {
 		if (tileType[cursor.cursorRows][cursor.cursorCols] == 1) {
 			handleType = 1;
 		}
-		// return type: Boat put successful 
+		// return type: Boat put successful
 		else {
 			if (boatPut) {
 				replaceTileInMainCanvasToOriginal(boatCol, boatRow);
-				
+
 				tileType[boatRow][boatCol] = 0;
 				tileType[cursor.cursorRows][cursor.cursorCols] = 1;
-				
+
 				handleType = 2;
 			}
 			else {
 				handleType = 0;
 			}
 
-    		boatPut = true;   
+    		boatPut = true;
 	    	tileType[cursor.cursorRows][cursor.cursorCols] = 1;
 
 	    	boatRow = cursor.cursorRows;
 	    	boatCol = cursor.cursorCols;
-	    	
+
 		}
 		updateItemsDraw();
 		drawCursorToMainCanvas();

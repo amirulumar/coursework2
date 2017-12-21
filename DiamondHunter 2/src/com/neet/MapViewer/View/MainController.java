@@ -16,7 +16,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
-
+/**
+* 	The main class that encompasses the GUI elements of MapViewer,
+* 	with MapOverview and RootLayout FXML files working as markup.
+* 	This is where the methods for various functions take place, e.g.
+* 	cursor movement, item placement, saving item positions, etc.
+*
+* 	@author Amirul Umar Bin Pandai, Joan Kabura, Hoi Fei Long
+* 	@since 	2017-12-24
+*/
 public class MainController {
 
 	@FXML
@@ -30,7 +38,7 @@ public class MainController {
 
 	@FXML
 	private Label boatPosition;
-	
+
 	private int axeX = -1, boatX = -1;
 	private int axeY, boatY;
 
@@ -125,7 +133,11 @@ public class MainController {
 		Platform.setImplicitExit(true);
 		MapMain.primaryStage.hide();
 	}
-
+	/**
+	* 	Displays instructions for interacting with the map viewer,
+	* 	complete with keybindings.
+	*
+	*/
 	@FXML private void helpInfo() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Instruction");
@@ -144,13 +156,14 @@ public class MainController {
 		alert.showAndWait();
 		alert.setOnCloseRequest(event -> {alert.close();});
 	}
-	/**	Locations for both items are saved to their respective files, 
+	/**
+	 * 	Locations for both items are saved to their respective files,
 	 * 	with x-axes first then y-axes.
-	 * 
+	 *
 	 *  @throws IOException
 	 */
 	@FXML private void save() throws IOException {
-		// If both locations for both items are not set before saving. X-axes for 
+		// If both locations for both items are not set before saving. X-axes for
 		// both items are used instead of the entire coordinate for simplicity.
 		if (axeX == -1 || boatX == -1) {
 			information.setText("Please add locations!");
@@ -166,8 +179,9 @@ public class MainController {
 			information.setText("Locations saved!");
 		}
 	}
-	/**	Reverts back to initial item locations.
-	 * 
+	/**
+	 * 	Reverts back to initial item locations.
+	 *
 	 * 	@throws IOException
 	 */
 	@FXML private void saveDefault() throws IOException {
@@ -181,7 +195,7 @@ public class MainController {
 		boat.close();
 		information.setText("Set to default!");
 	}
-	
+
 	private void updateCursorPosition() {
 		cursorPosition.setText("(" + MapMain.tileMapViewer.cursor.cursorRows + ", " + MapMain.tileMapViewer.cursor.cursorCols + ")");
 	}

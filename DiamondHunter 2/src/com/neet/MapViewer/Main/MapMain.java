@@ -11,41 +11,41 @@ import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
 /**
- * This class is the main class of Map Viewer. It loads the root layout and the basis of map layout
+ * This class is the main class of MapViewer, the executable file. It loads the root layout and the basis of map layout
  * by loading the FXML file. It also loads map file and image file for the preparation of drawing.
  * Set the implicit exit to false is to hide the map viewer when the user go to the main game.
  * However there is a circumstance that the user closes the map without going to the main game. Therefore
  * on close request it is set to true back.
- * 
- * @author  Jadon Ming
- * @since   2016-12-08
+ *
+ * @author  Amirul umar Bin Pandai, Joan Kabura, Hoi Fei Long
+ * @since   2017-12-24
 */
 
 public class MapMain extends Application {
     public static Stage primaryStage;
     public static TileMapViewer tileMapViewer;
-    
+
     public BorderPane rootLayout;
     public TilePane tileOverview;
 
     public static boolean viewerLaunch = false;
-    
+
 	@Override
 	public void start(Stage primaryStage) {
 		MapMain.primaryStage = primaryStage;
         MapMain.primaryStage.setTitle("MapViewer");
-        
+
         Platform.setImplicitExit(false);
 
         initRootLayout();
-        
+
 		showMapOverview();
-		
+
 		viewerLaunch = true;
-		
+
 		primaryStage.setOnCloseRequest(event -> { Platform.setImplicitExit(true); });
 	}
-	
+
     public void initRootLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -53,21 +53,21 @@ public class MapMain extends Application {
             rootLayout = (BorderPane) loader.load();
 
             Scene scene = new Scene(rootLayout);
-            
+
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.show();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void showMapOverview() {
     	tileMapViewer = new TileMapViewer();
     	tileMapViewer.loadMapFile("/Maps/testmap.map");
     	tileMapViewer.loadImagesFiles("/Tilesets/testtileset.gif", "/Sprites/items.gif");
-	    
+
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MapMain.class.getResource("/com/neet/MapViewer/View/MapOverview.fxml"));
@@ -75,7 +75,7 @@ public class MapMain extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		tileOverview.setPrefColumns(tileMapViewer.numCols);
 		tileOverview.setPrefRows(tileMapViewer.numRows);
 		tileMapViewer.initialiseCanvas();
