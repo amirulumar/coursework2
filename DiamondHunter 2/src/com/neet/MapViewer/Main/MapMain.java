@@ -17,8 +17,8 @@ import javafx.stage.Stage;
  * However there is a circumstance that the user closes the map without going to the main game. Therefore
  * on close request it is set to true back.
  *
- * @author  Amirul umar Bin Pandai, Joan Kabura, Hoi Fei Long
- * @since   2017-12-24
+ * @author  Amirul Umar Bin Pandai, Joan Kabura, Hoi Fei Long
+ * @since   2017-12-23
 */
 
 public class MapMain extends Application {

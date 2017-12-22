@@ -56,6 +56,10 @@ public class PlayState extends GameState {
 	
 	// transition box
 	private ArrayList<Rectangle> boxes;
+
+	private Scanner axeIO;
+
+	private Scanner boatIO;
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);

@@ -17,7 +17,7 @@ import javafx.scene.image.Image;
  * and mainCanvas will draw the cursor and items that already put.
  *
  * @author  Amirul Umar Bin Pandai, Joan Kabura, Hoi Feo Long
- * @since   2017-12-24
+ * @since   2017-12-23
 */
 
 public class TileMapViewer {

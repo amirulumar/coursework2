@@ -23,7 +23,7 @@ import javafx.scene.layout.Region;
 * 	cursor movement, item placement, saving item positions, etc.
 *
 * 	@author Amirul Umar Bin Pandai, Joan Kabura, Hoi Fei Long
-* 	@since 	2017-12-24
+* 	@since 	2017-12-23
 */
 public class MainController {
 

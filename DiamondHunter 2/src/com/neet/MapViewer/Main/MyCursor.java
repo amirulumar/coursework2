@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * This class contains the cursor used by the map.
  *
  * @author  Amirul Umar Bin Pandai, Joan Kabura, Hoi Fei Long
- * @since   2017-12-24
+ * @since   2017-12-23
 */
 public class MyCursor {
 	/**
